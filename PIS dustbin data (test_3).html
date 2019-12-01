@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
+
+    <title>Real time garbage data</title>
+  </head>
+  <body background = "b5.jpg">
+
+    <!-- <h1 id="bin_status" >Real time garbage data</h1> -->
+    <h3 id="server_response" ></h3>
+
+    <div class="col-md-6 alert alert-primary" id="bin_status" role="alert">
+  A simple primary alert—check it out!
+</div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+      
+      $.get("https://cloud.boltiot.com/remote/d8adb078-fa6c-4c08-9f9a-4ebcd81bd6e2/serialRead?till=10&deviceName=BOLT13167538", function(data, status){
+        // alert("Data: " + data + "\nStatus: " + status);
+        //var m=23
+        //$("#bin_status").text("distance = " + m.toString(10));
+
+
+        data = JSON.stringify(data);
+        var obj = JSON.parse(data);
+	      var a=obj.value.split("/n");
+        if((a[0]=="Device is offline")||(a[0]=="Command timed out")){
+          var b="Device is offline"}
+         
+          
+        else{
+           if(parseInt(a[0])<12){
+            var b="Dustbin ID 13167538 is 80% full"
+          }
+          else{
+            var c=(parseInt(a[0])/25)*100
+            var b="Dustbin ID 13167538 is "+c.toString(10)+"% full"
+          }
+          
+
+        }
+
+        $("#bin_status").text(b);
+        //$("#bin_status").text(obj.value);
+        //$("#server_response").text(data);
+      });
+    
+    </script>
+
+  </body>
+</html>
